@@ -35,7 +35,7 @@ function solve(index, numEl) {
 // console.log(solve(10, 5)); // "19232"
 
 ////////////////////////////////////////
-// Where my anagrams at?
+// 42. Where my anagrams at?
 /* 
 What is an anagram? Well, two words are anagrams of each other if they both contain the same letters. For example:
 
@@ -54,3 +54,29 @@ anagrams('racer', ['crazer', 'carer', 'racar', 'caers', 'racer']) => ['carer', '
 
 anagrams('laser', ['lazing', 'lazy',  'lacer']) => []
 */
+
+function anagrams(str, arr) {
+    const lookup = {};
+    const match = [];
+    for (let char of str) {
+        lookup[char] = (lookup[char] || 0) + 1;
+    }
+
+    mainloop: for (let word of arr) {
+        if (word.length !== str.length) continue;
+        const lookupCopy = { ...lookup };
+
+        for (let char of word) {
+            if (!lookupCopy[char]) continue mainloop;
+            lookupCopy[char] -= 1;
+        }
+
+        match.push(word);
+    }
+
+    return match;
+}
+
+// console.log(anagrams("abba", ["aabb", "abcd", "bbaa", "dada"]));
+// console.log(anagrams("racer", ["crazer", "carer", "racar", "caers", "racer"]));
+// console.log(anagrams("laser", ["lazing", "lazy", "lacer"]));
