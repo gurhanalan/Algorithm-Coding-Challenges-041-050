@@ -175,3 +175,76 @@ function sumPrimes(num) {
 }
 
 console.log(sumPrimes(2));
+
+// 46. Smallest Common Multiple - freecodecamp
+/* 
+Find the smallest common multiple of the provided parameters that can be evenly divided by both, as well as by all sequential numbers in the range between these parameters.
+
+The range will be an array of two numbers that will not necessarily be in numerical order.
+
+For example, if given 1 and 3, find the smallest common multiple of both 1 and 3 that is also evenly divisible by all numbers between 1 and 3. The answer here would be 6.
+
+********************************************************************
+smallestCommons([1, 5]) should return a number.
+
+smallestCommons([1, 5]) should return 60.
+
+smallestCommons([5, 1]) should return 60.
+
+smallestCommons([2, 10]) should return 2520.
+
+smallestCommons([1, 13]) should return 360360.
+
+smallestCommons([23, 18]) should return 6056820.
+ */
+// Version that does not pass all the tests
+function smallestCommons(arr, product = 1) {
+    arr.sort((a, b) => a - b);
+    const [a, b] = arr;
+    if (a === b) return product;
+    console.log(a, b, product);
+    if (product % b !== 0) product *= b;
+    return smallestCommons([a, b - 1], product);
+}
+
+// Version that does not pass all the tests
+function smallestCommons2(arr, product = 1) {
+    arr.sort((a, b) => a - b);
+    const [a, b] = arr;
+    if (a === b) return product;
+    console.log(a, b, product);
+    if (product % a !== 0) product *= a;
+    return smallestCommons2([a + 1, b], product);
+}
+
+// Brute force
+function smallestCommons3(arr) {
+    arr.sort((a, b) => a - b);
+    const [a, b] = arr;
+    const arrNums = [];
+    for (let i = 0; i <= b - a; i++) {
+        arrNums[i] = a + i;
+    }
+    let product = 1;
+    while (!arrNums.every((el) => product % el === 0)) {
+        product += 1;
+    }
+    return product;
+}
+
+// Best answer
+function smallestCommons4(arr) {
+    arr.sort((a, b) => a - b);
+    const [a, b] = arr;
+    const arrNums = [];
+    for (let i = 0; i <= b - a; i++) {
+        arrNums[i] = a + i;
+    }
+    const upperLimit = arrNums.reduce((acc, el) => acc * el);
+
+    for (let product = b; product <= upperLimit; product += b) {
+        if (arrNums.every((el) => product % el === 0)) return product;
+    }
+}
+
+console.log(smallestCommons4([1, 5]));
