@@ -279,3 +279,31 @@ console.log(
         return n >= 5;
     })
 );
+
+/* 48. Steamroller - freecodecamp
+
+Flatten a nested array. You must account for varying levels of nesting.
+steamrollArray([[["a"]], [["b"]]]) should return ["a", "b"].
+
+steamrollArray([1, [2], [3, [[4]]]]) should return [1, 2, 3, 4].
+
+steamrollArray([1, [], [3, [[4]]]]) should return [1, 3, 4].
+
+steamrollArray([1, {}, [3, [[4]]]]) should return [1, {}, 3, 4].
+
+Your solution should not use the Array.prototype.flat() or Array.prototype.flatMap() methods. 
+
+*/
+
+function steamrollArray2(arr) {
+    if (!arr.some((el) => Array.isArray(el))) return arr;
+    const flat1 = arr.reduce((acc, cur) => {
+        if (Array.isArray(cur)) acc.push(...cur);
+        else acc.push(cur);
+        return acc;
+    }, []);
+    return steamrollArray2(flat1);
+}
+
+console.log(steamrollArray2([1, [2], [], [3, [[4]]]]));
+console.log([1, [2], [], [3, [[4]]]].some((el) => Array.isArray(el)));
